@@ -1,0 +1,18 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+custom:
+  login-path: "/login"
+  job-path: "/job/"
+  jenkins-service-base-url: ${JENKINS_SERVICE_BASE_URL}

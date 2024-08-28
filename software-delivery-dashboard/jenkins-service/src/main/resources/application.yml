@@ -1,0 +1,6 @@
+server:
+  port: ${SERVER_PORT}
+custom:
+  jenkins-server-uri: ${JENKINS_SERVER_URI}
+  jenkins-server-username: ${JENKINS_SERVER_USERNAME}
+  jenkins-server-password: ${JENKINS_SERVER_PASSWORD}

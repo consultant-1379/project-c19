@@ -1,0 +1,17 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+custom:
+  client-service-base-url: ${CLIENT_SERVICE_BASE_URL}
+  docker-client-service-base-url: ${DOCKER_CLIENT_SERVICE_BASE_URL}

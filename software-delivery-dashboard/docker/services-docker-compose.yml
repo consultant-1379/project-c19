@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  email:
+    image: project/email-service:latest
+    restart: always
+    environment:
+      - SERVER_PORT=8081
+      - MAIL_USERNAME=dev.jonathanlee@gmail.com
+      - MAIL_PASSWORD=QDe19bR0d2nhP^C^gm0FPmiOtAUq^$$
+    ports:
+      - "8081:8081"
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - my-db:/var/lib/mysql
+  regisration:
+    image: project/registration-service:latest
+    restart: always
+    environment:
+      - SERVER_PORT=8082
+      - DATABASE_URL=jdbc:mysql://db:3306/db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+      - CLIENT_SERVICE_BASE_URL=http://client:8084
+      - DOCKER_CLIENT_SERVICE_BASE_URL=http://localhost:8084
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - email
+  jenkins:
+    image: project/jenkins-service:latest
+    restart: always
+    environment:
+      - SERVER_PORT=8083
+      - JENKINS_SERVER_URI=https://fem1s11-eiffel216.eiffel.gic.ericsson.se:8443/jenkins/
+      - JENKINS_SERVER_USERNAME=efolhar
+      - JENKINS_SERVER_PASSWORD=Sp5t0303!!
+    ports:
+      - "8083:8083"
+    depends_on:
+      - email
+  client:
+    image: project/client-service:latest
+    restart: always
+    environment:
+      - SERVER_PORT=8084
+      - DATABASE_URL=jdbc:mysql://db:3306/db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+      - JENKINS_SERVICE_BASE_URL=http://jenkins:8083/jenkins
+    ports:
+      - "8084:8084"
+    depends_on:
+      - db
+      - email
+      - regisration
+      - jenkins
+
+volumes:
+  my-db:
